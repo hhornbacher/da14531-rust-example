@@ -1,0 +1,55 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Debug",
+      "cwd": "${workspaceRoot}",
+      "executable": "build/dialog-example",
+      "request": "launch",
+      "type": "cortex-debug",
+      "serverpath": "/opt/SEGGER/JLink/JLinkGDBServerCLExe",
+      "servertype": "jlink",
+      "device": "Cortex-M0+",
+      "interface": "swd",
+      "armToolchainPath": "/usr/bin/",
+      "gdbPath": "/usr/bin/gdb-multiarch",
+      "rttConfig": {
+        "enabled": true,
+        "address": "auto",
+        "decoders": [
+          {
+            "label": "Log",
+            "port": 0,
+            "type": "console"
+          }
+        ]
+      },
+      "preLaunchTask": "build"
+    },
+    {
+      "name": "Debug-Mac",
+      "cwd": "${workspaceRoot}",
+      "executable": "build/dialog-example",
+      "request": "launch",
+      "type": "cortex-debug",
+      "serverpath": "/Applications/SEGGER/JLink_V688a/JLinkGDBServerCLExe",
+      "servertype": "jlink",
+      "device": "Cortex-M0+",
+      "interface": "swd",
+      "armToolchainPath": "/Applications/ARM/bin",
+      "gdbPath": "/Applications/ARM/bin/arm-none-eabi-gdb",
+      "rttConfig": {
+        "enabled": true,
+        "address": "auto",
+        "decoders": [
+          {
+            "label": "Log",
+            "port": 0,
+            "type": "console"
+          }
+        ]
+      },
+      "preLaunchTask": "build"
+    }
+  ]
+}

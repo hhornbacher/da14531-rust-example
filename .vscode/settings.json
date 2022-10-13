@@ -1,0 +1,10 @@
+{
+    "cmake.configureOnOpen": false,
+    "cortex-debug.registerUseNaturalFormat": false,
+    "cortex-debug.variableUseNaturalFormat": false,
+    "rust-analyzer.server.extraEnv": {
+        "SDK_PATH": "/home/harry/Development/rapitag/firmware-bundle/sdk"
+    },
+    "rust-analyzer.cargo.target": "thumbv6m-none-eabi",
+    "rust-analyzer.checkOnSave.allTargets": false
+}

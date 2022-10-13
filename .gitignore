@@ -1,0 +1,9 @@
+/target
+/Cargo.lock
+aes_key.bin
+/build
+/reports
+.cortex-debug.*
+/release
+.metadata
+/sdk
