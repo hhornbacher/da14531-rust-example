@@ -57,7 +57,7 @@ set(CMAKE_OBJDUMP ${ARM_TOOLCHAIN_BIN_PATH}/${CROSS_COMPILE}objdump
 
 set(COMMON_FLAGS "-mcpu=cortex-m0plus")
 set(COMMON_FLAGS "${COMMON_FLAGS} -mthumb")
-set(COMMON_FLAGS "${COMMON_FLAGS} -g1")
+set(COMMON_FLAGS "${COMMON_FLAGS} -g")
 
 set(CMAKE_C_FLAGS "-Os")
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Werror -Wno-maybe-uninitialized -Wno-error=address")
@@ -69,4 +69,4 @@ set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS}" CACHE STRING "")
 set(CMAKE_ASM_FLAGS "${CMAKE_C_FLAGS}" CACHE STRING "")
 
 set(CMAKE_EXE_LINKER_FLAGS   "${COMMON_FLAGS} --specs=nano.specs --specs=nosys.specs")
-set(CMAKE_EXE_LINKER_FLAGS   "${CMAKE_EXE_LINKER_FLAGS} -Wl,--gc-sections")
+set(CMAKE_EXE_LINKER_FLAGS   "${CMAKE_EXE_LINKER_FLAGS} -Wl,--gc-sections -Xlinker -Map=output.map -fstack-usage")

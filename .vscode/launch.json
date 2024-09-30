@@ -13,6 +13,11 @@
       "interface": "swd",
       "armToolchainPath": "/usr/bin/",
       "gdbPath": "/usr/bin/gdb-multiarch",
+      "preLaunchCommands": [
+        "monitor reset",
+        "monitor halt",
+        "set *0x50000012 = ((*0x50000012)&0xFFFC)|0x2",
+      ],
       "rttConfig": {
         "enabled": true,
         "address": "auto",
@@ -24,7 +29,7 @@
           }
         ]
       },
-      "preLaunchTask": "build"
+      // "preLaunchTask": "build"
     },
     {
       "name": "Debug-Mac",

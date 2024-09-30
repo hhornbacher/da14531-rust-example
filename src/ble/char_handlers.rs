@@ -19,9 +19,6 @@ pub fn led_write_char_write_handler(param: &Custs1ValWriteInd) {
     let token = unsafe { param.value.as_slice(1) };
 
     app().on_set_led(token[0] != 0);
-
-    let conidx = app_env_get_conidx(param.conidx);
-    app_easy_gap_disconnect(conidx);
 }
 
 pub fn led_read_char_read_handler(param: &Custs1ValueReqInd) {

@@ -11,7 +11,7 @@ set(CMAKE_TOOLCHAIN_FILE ${CMAKE_CURRENT_SOURCE_DIR}/cmake/toolchain.cmake)
 # Configure SDK root path
 set(
     SDK_PATH
-    "/home/developer/project/sdk"
+    "/home/harry/Development/rapitag/firmware-bundle/sdk"
 )
 
 # Setup project name, version and languages

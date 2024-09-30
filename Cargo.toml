@@ -1,8 +1,8 @@
 [package]
 edition = "2021"
+license = "MIT"
 name = "dialog-example"
 version = "0.1.0"
-license = "MIT"
 
 [lib]
 crate-type = ["staticlib"]
@@ -22,11 +22,28 @@ opt-level = "z"
 
 [dependencies]
 cty = "0.2.2"
-da14531-hal = "0.2.2"
-da14531-sdk = "0.1.1"
+da14531-hal = {git = "https://github.com/rapitag/da14531-hal.git"}
+da14531-sdk = {git = "https://github.com/rapitag/da14531-sdk.git", branch = "feature/no-ble", default-features = false, features = [
+  "alloc",
+  "sleep_mode_off",
+  "address_mode_static", #   "profile_dis_server",
+  "profile_custom_server1",
+  "custom_rest_evt_cb",
+  "driver_hw_otpc",
+  "driver_syscntl",
+  "driver_gpio",
+  "driver_trng",
+  "driver_adc",
+  "driver_spi",
+  "driver_spi_flash",
+  "expose_bindings",
+]}
 paste = "1.0.7"
 rtt-target = {version = "0.3.1", features = ["cortex-m"]}
 
 [features]
 default = []
 test_open = []
+
+[patch.crates-io]
+da14531-sdk-macros = {git = "https://github.com/rapitag/da14531-sdk-macros.git", branch = "develop"}

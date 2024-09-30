@@ -88,7 +88,7 @@ impl Da14531Peripherals {
         let _spi_flash_en = p0.p0_01.into_output(PinState::High); // Disallow spontaneous SPI Flash wake-up
         let wakeup_pin = p0.p0_05.into_floating_input();
         let pwm_buzzer = p0.p0_11.degrade().into_alternate();
-        let led_pin = p0.p0_08.degrade().into_output(PinState::Low);
+        let led_pin = p0.p0_09.degrade().into_output(PinState::Low);
 
         pwm_timer.enable_clock();
         pwm_timer.set_clock_div(BaseClockDiv::Div8);
@@ -142,7 +142,7 @@ impl PeripheralsDriver for Da14531Peripherals {
     fn get_temperature(&self) -> u16 {
         self.adc.init(
             AdcConfig::default()
-                .set_channel_pos(AdcInputTemp)
+                .set_channel_pos(&AdcInputTemp)
                 .set_chopper_mode(Chopper::On)
                 .set_sample_time(SampleTime::Cycles15X8)
                 .set_averaging(Averaging::SamplesX32),

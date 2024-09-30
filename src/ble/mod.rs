@@ -7,7 +7,6 @@ use crate::app::BleDriver;
 
 pub mod char_handlers;
 pub mod config;
-pub mod user_peripheral;
 
 pub struct Da14531Ble;
 

@@ -73,7 +73,7 @@ impl SoundGenerator {
             }
         };
 
-        self.pos += self.pos.wrapping_add(1);
+        self.pos = self.pos.wrapping_add(1);
 
         Some(result)
     }

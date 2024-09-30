@@ -14,13 +14,3 @@ if("${CMAKE_BUILD_TYPE}" STREQUAL "Release")
 else()
   set(BUILD_TYPE debug)
 endif()
-
-add_custom_command(
-  TARGET ${PROJECT_NAME} POST_BUILD
-  COMMAND ${CMAKE_SOURCE_DIR}/cmake/size-report.sh "${PROJECT_NAME}" "${BUILD_TYPE}"
-)
-
-add_custom_command(
-  TARGET ${PROJECT_NAME} PRE_LINK
-  COMMAND size ${CMAKE_CURRENT_SOURCE_DIR}/target/thumbv6m-none-eabi/${BUILD_TYPE}/librust.a | head -n 2
-)

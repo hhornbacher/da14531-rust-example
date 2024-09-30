@@ -1,9 +1,8 @@
 //! # DA15431 Rust example project
-//! 
+//!
 //! This project contains a simple BLE application, which can control an LED and read the die temperature
 
 #![no_std]
-#![feature(default_alloc_error_handler)]
 
 extern crate alloc;
 

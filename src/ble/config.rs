@@ -1,53 +1,46 @@
 use da14531_sdk::{
-    app_modules::app_custs::{custs1::app_custs1_create_db, CustPrfFuncCallbacks},
     app_modules::{
-        default_handlers_configuration, ms_to_timer_units, DEF_ADV_WITH_TIMEOUT, DEF_SEC_REQ_NEVER,
+        app_cfg_addr_src, configure_custom_server1_service, default_handlers_configuration,
+        ms_to_ble_slots, ms_to_timer_units, AdvertiseConfiguration, APP_CFG_ADDR_STATIC,
+        DEF_ADV_WITH_TIMEOUT, DEF_SEC_REQ_NEVER,
     },
-    ble_stack::profiles::custom::custs::service_database,
-    perm,
-    platform::core_modules::rwip::TASK_ID_CUSTS1,
+    ble_stack::host::gap::GAP_GEN_DISCOVERABLE,
+    platform::core_modules::common::{ADV_ALLOW_SCAN_ANY_CON_ANY, ADV_ALL_CHNLS_EN},
 };
 
-// Setup service database
-service_database![
-    {
-        etype: service,
-        uuid16: 0xFD6B // Rapitag 16bit UUID
-    },
-    {
-        etype: characteristic,
-        perm: perm!(WR, ENABLE) | perm!(WRITE_COMMAND, ENABLE) | perm!(WRITE_REQ, ENABLE),
-        uuid16: 0x0002,
-        length: 1, // bool
-        user_description: "LED Write"
-    },
-    {
-        etype: characteristic,
-        perm: perm!(RD, ENABLE),
-        uuid16: 0x0003,
-        length: 1, // bool
-        user_description: "LED Read"
-    },
-    {
-        etype: characteristic,
-        perm: perm!(RD, ENABLE),
-        uuid16: 0x0004,
-        length: 2, // u16
-        user_description: "Temperature Read"
-    }
-];
-
-/// Setup custom profile funcs
 #[no_mangle]
-pub static CUST_PRF_FUNCS: [CustPrfFuncCallbacks; 1] = [CustPrfFuncCallbacks {
-    task_id: TASK_ID_CUSTS1,
-    att_db: &CUSTS1_ATT_DB as *const _ as *const da14531_sdk::bindings::attm_desc_128,
-    max_nb_att: CUSTS1_ATT_DB_LEN,
-    db_create_func: Some(app_custs1_create_db),
-    enable_func: None,
-    init_func: None,
-    value_wr_validation_func: None,
-}];
+pub static USER_DEVICE_NAME: &str = "ble-example";
+
+pub const PAYLOAD_LENGTH: u16 = (1024 * 4) + 512;
+
+configure_custom_server1_service! {
+    svc1: {
+        uuid: 0xBEEF,
+        characteristics: {
+            led_write: {
+                uuid: 0x0001,
+                permissions: (WRITE_ENABLED | WRITE_REQUEST_ACCEPTED | WRITE_COMMAND_ACCEPTED),
+                length: crate::ble::config::PAYLOAD_LENGTH,
+                user_description: "LED Write",
+                write_handler: crate::ble::char_handlers::led_write_char_write_handler
+            },
+            led_read: {
+                uuid: 0x0002,
+                permissions: (READ_ENABLED),
+                length: crate::ble::config::PAYLOAD_LENGTH,
+                user_description: "LED Read",
+                read_handler: crate::ble::char_handlers::led_read_char_read_handler
+            },
+            temp_read: {
+                uuid: 0x0003,
+                permissions: (READ_ENABLED),
+                length: crate::ble::config::PAYLOAD_LENGTH,
+                user_description: "Temp. Read",
+                read_handler: crate::ble::char_handlers::temp_read_char_read_handler
+            },
+        }
+    }
+}
 
 /// Set the advertisement period
 const ADV_PERIOD: i32 = ms_to_timer_units(4000) as i32;
@@ -58,3 +51,16 @@ default_handlers_configuration! {
     advertise_period: ADV_PERIOD,
     security_request_scenario: DEF_SEC_REQ_NEVER
 }
+
+// Define user-specific advertisement configuration
+#[no_mangle]
+pub static USER_ADV_CONF: AdvertiseConfiguration = AdvertiseConfiguration {
+    addr_src: app_cfg_addr_src(APP_CFG_ADDR_STATIC),
+    intv_min: ms_to_ble_slots(100),
+    intv_max: ms_to_ble_slots(150),
+    channel_map: ADV_ALL_CHNLS_EN as u8,
+    mode: GAP_GEN_DISCOVERABLE as u8,
+    adv_filt_policy: ADV_ALLOW_SCAN_ANY_CON_ANY as u8,
+    peer_addr: [0x1, 0x2, 0x3, 0x4, 0x5, 0x6],
+    peer_addr_type: 0,
+};
